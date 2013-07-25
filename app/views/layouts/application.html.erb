@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<%= render '/refinery/html_tag' %>
+  <% site_bar = render('/refinery/site_bar', :head => true) -%>
+  <%= render '/refinery/head' %>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <body>
+    <%= site_bar -%>
+    <%= render '/refinery/ie6check' if request.env['HTTP_USER_AGENT'] =~ /MSIE/ -%>
+    <div id="page_container">
+      <header id="header">
+        <%= render '/refinery/header' -%>
+      </header>
+      <section id="page">
+        <div class="container">
+          <!-- панель с лого и телефоном -->
+          <div class="row">
+            <div class="span12 logopanel">
+               <div id="brand-bar" class="clearfix">
+                <%= link_to image_tag("/assets/Logo.png"), "/"%>
+                <div class="contact-info">  
+                  <p><span class="time"><strong>Наши консультанты всегда рады помочь Вам</strong><br />
+              Понедельник - Пятница с 8:30 до 17:30</span> 
+              <%# session[:product_id] %>
+                  <strong class="phone">8 800 555-18-90</strong> <br/>
+                  (звонок по России бесплатный)
+                </p>
+                </div> 
+                </div>
+            </div>
+          </div>
+          <!-- панель поиска -->
+          <div class="row">
+            <div class="span12 searchpanel">
+              <div class="span5 searchform-span">
+                <%= form_tag("/search", :method => "post", :action => "prodsearch", :class => "form-search") do %>
+                  <%= text_field_tag 'query', nil, :class => "input-mysize search-query", :placeholder => "Например: манометр показывающий мп4-у" %>
+                  <%= submit_tag "Поиск", :class => "btn" %>
+                <% end %>
+                <!--<form class="form-search">
+                <input type="search" class="input-mysize search-query" placeholder="Например: манометр показывающий мп4-у">
+                <button type="submit" class="btn">Поиск</button>
+                </form>
+              -->
+              </div>
+                <ul id="searchmenu">
+                  <li><a href="/categories">Продукция</a></li>
+                  <li><a href="/на-складе">На складе</a></li>
+                  <li><a href="/alphabet?char=А">Поиск от А до Я</a></li>
+                  <li><a href="/бренды">Бренды</a></li>
+                  <li><a href="/set"> Ваш заказ </a></li>
+                </ul>
+            </div>
+          </div>
+          <!-- тело страницы -->
+          <div class="row">
+              <%= yield %>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <hr>
+        <%= render '/refinery/footer' -%>
+      </footer>
+    </div>
+    <%= render '/refinery/javascripts' %>
+  </body>
+</html>

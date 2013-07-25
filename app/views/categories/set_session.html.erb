@@ -1,0 +1,116 @@
+
+<%= javascript_include_tag "jquery.validate" %>
+<script type="text/javascript">
+function delete_from_session(i,q,t) { 
+  $.ajax({
+    url: "/deletesessionitem/?id="+i+"&q="+q,
+    success: function(){
+    	$('#a'+i+'_'+q+'_'+t).fadeOut(1000);
+    	$('#b'+i+'_'+q+'_'+t).fadeOut(1000);
+    	$('#c'+i+'_'+q+'_'+t).fadeOut(1000);
+    }
+    });
+} 
+</script>
+<script type="text/javascript">
+ jQuery(document).ready(function($){
+$("#finish_form").validate({
+  rules: {
+    fio: { 
+    	required: true,
+    	minlength:3  
+  	},
+  	phone: {
+  		required: true
+  	},
+  	email: {
+  		required: true,
+  		email: true
+  	},
+  	job: {
+  		required: true
+  	},
+  	organization: {
+  		required: true
+  	}
+  },
+  messages: {
+  	fio: { 
+			required: "Это поле обязательно для заполнения",
+			minlength: "Минимальная длина 3 симола"
+		},
+	phone:{
+			required: "Это поле обязательно для заполнения"
+		},
+	email: {
+			required: "Это поле обязательно для заполнения",
+			email: "Введите верный адрес электронной почты"
+		},
+	job: {
+			required: "Это поле обязательно для заполнения"
+		},	
+	organization:{
+			required: "Это поле обязательно для заполнения"
+		}
+  },
+  submitHandler: function(form) {
+   form.submit();
+ }
+});
+});
+</script>
+<br/>
+<div class="span12 partner">
+    <%= render 'layouts/carousel' %>
+</div>
+
+<div class="span12 product_list">
+<% if session[:product].blank? %>
+<br/>
+Продукты для заказа не выбраны. Корзина пуста.
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<% else %>
+	<!--<h4> Количество позиций в вашем заказе: <%= @basket.count %> шт. </h4>-->
+	<div id="products">
+		<table id="b_table">
+			<tbody>
+      <% i = 0 %>
+			<% @basket.each do |product| %>
+			<% product[:pr].each do |m| %>
+      
+				<tr>
+					<!--<td class="list-thumb"><%= link_to (image_fu m.images.first, '160x120'), refinery.products_product_path(m) %></td>-->
+					<td id="a<%= m.id %>_<%= product[:q] %>_<%= i %>" class="list-info">
+						<strong><%= link_to m.title, refinery.products_product_path(m) %></strong>
+					</td>
+					<td  id="b<%= m.id %>_<%= product[:q] %>_<%= i %>"class="list-price"> <%= product[:q] %> шт.</td>
+					<td id="c<%= m.id %>_<%= product[:q] %>_<%= i %>">
+						<a href="#" class="btn btn-danger btn-small" style="color:white;" onclick="delete_from_session(<%= m.id %>, <%= product[:q] %>, <%= i %>);"><i class="icon-white icon-remove"></i> </a>
+					</td>
+				</tr>
+        <%  i = i + 1 %>
+				<% end %>
+			<% end %>
+			</tbody>
+		</table>
+
+		<h4>Контакты заказчика</h4>
+		<%= form_tag "/finish", :method => "post", :action => "send_order", :id => "finish_form" do %>
+  		<%= label_tag(:fio, "ФИО") %>
+  		<%= text_field_tag "fio" %>
+  		<%= label_tag(:phone, "Номер телефона") %>
+  		<%= text_field_tag(:phone) %>
+  		<%= label_tag(:email, "E-mail") %>
+  		<%= text_field_tag(:email) %> 
+  		<%= label_tag(:job, "Должность") %>
+  		<%= text_field_tag(:job) %>
+  		<%= label_tag(:organization, "Организация") %>
+  		<%= text_field_tag(:organization) %> <br/><br/>
+  		<%= submit_tag("Отправить") %>
+		<% end %>
+		<div id="send_order">
+			<%= button_to "Очистить корзину", :action => "delete_order" %>
+		</div>
+	</div>
+<% end %>
+</div>

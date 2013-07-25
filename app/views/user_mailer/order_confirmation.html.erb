@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Заказ <%= @number %></h1>
+    <p>
+      ФИО: <%= @client[:fio] %><br/>
+      Телефон: <%= @client[:phone] %><br/>
+      Почта: <%= @client[:email] %><br/>
+      Организация: <%= @client[:organization] %><br/>
+      Должность: <%= @client[:job] %><br/>
+    </p>
+    <p>
+      <h3>Запрошенные позиции</h3>
+      <% @order.each do |product| %>
+      <% product[:pr].each do |p| %>
+      <strong><%= p.title %></strong> - <%= product[:q] %> шт. <br/>
+      <% end %>
+      <% end %>
+    </p>
+  </body>
+</html>

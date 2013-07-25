@@ -1,0 +1,42 @@
+<br/>
+<div class="span12 partner">
+    <%= render 'layouts/carousel' %>
+</div>
+<div class="span12 categories">
+<h3>Категории продукции по применению</h3>
+
+<dl class="grid3">
+<div class="accordion" id="accordion2">
+<% k = 0 %>
+<% while k < @categories_count do %>    
+     
+      <div class="accordion-group">
+         <% unless @a[k+1].nil? %>
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse<%= k %>">
+              <% @a[k+1].each do |parent_category| %>
+              <%= parent_category.title %> 
+              <% end %>
+          </a>
+          </div>
+          <% end %>  
+          <div id="collapse<%= k %>" class="accordion-body collapse">
+            <div class="accordion-inner">
+              <% unless @b[k+1].nil? %>
+              <% @b[k+1].each do |xx| %>
+                <% xx.each do |xxx| %>
+                <%= link_to xxx.title, xxx %> (<%= xxx.products.count %>)<br/>
+                <% end %>
+              <% end %>
+              
+            </div>
+          </div>
+          <% end %>
+      </div>
+    
+    <% k = k + 1 %>
+<% end %>
+</dl>
+</div>
+
+<!--<%= link_to 'New Category', new_category_path %>-->

@@ -1,0 +1,38 @@
+ru:
+  refinery:
+    plugins:
+      products:
+        title: Продукты
+    products:
+      admin:
+        products:
+          actions:
+            create_new: Добавить новый продукт
+            reorder: Reorder Products
+            reorder_done: Done Reordering Products
+          records:
+            title: Продукты
+            sorry_no_results: Ничего не найдено по вашему запросу.
+            no_items_yet: Пока не создан ни один продукт. Нажмите "Добавить новый продукт" для добавления.
+          product:
+            view_live_html: Посмотреть страницу этого продукта <br/><em>(открывается в новом окне)</em>
+            edit: Редактировать продукт
+            delete: Удалить продукт
+      products:
+        show:
+          other: Другие продукты
+  activerecord:
+    attributes:
+      'refinery/products/product':
+        title: Наименование
+        features: Характеристики
+        description: Полное описание
+        photo: Photo
+        category_id: Категория
+        docs: Документы
+        images: Изображения
+        manufacturer: Производитель
+        gosreestr_number: Номер ГосРеестра
+        usage: Применение
+        si_identity: Обозначение СИ
+        m_interval: Межповерочный интервал

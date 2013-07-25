@@ -1,0 +1,48 @@
+<br/>
+<div class="span12 partner">
+
+    <%= render 'layouts/carousel' %>
+</div>
+
+<div class="span12 categories">
+<h3>Категории продукции</h3>
+
+<dl class="grid3">
+	<ul id="alphabet_list">
+    <li><%= link_to "А", :action => "alphabet", :char => "А" %></li>
+    <li><%= link_to "Б", :action => "alphabet", :char => "Б" %></li>
+    <li><%= link_to "В", :action => "alphabet", :char => "В" %></li>
+    <li><%= link_to "Г", :action => "alphabet", :char => "Г" %></li>
+    <li><%= link_to "Д", :action => "alphabet", :char => "Д" %></li>
+    <li><%= link_to "Е", :action => "alphabet", :char => "Е" %></li>
+    <li><%= link_to "Ж", :action => "alphabet", :char => "Ж" %></li>
+    <li><%= link_to "З", :action => "alphabet", :char => "З" %></li>
+    <li><%= link_to "И", :action => "alphabet", :char => "И" %></li>
+    <li><%= link_to "К", :action => "alphabet", :char => "К" %></li>
+    <li><%= link_to "Л", :action => "alphabet", :char => "Л" %></li>
+    <li><%= link_to "М", :action => "alphabet", :char => "М" %></li>
+    <li><%= link_to "Н", :action => "alphabet", :char => "Н" %></li>
+    <li><%= link_to "О", :action => "alphabet", :char => "О" %></li>
+    <li><%= link_to "П", :action => "alphabet", :char => "П" %></li>
+    <li><%= link_to "Р", :action => "alphabet", :char => "Р" %></li>
+    <li><%= link_to "С", :action => "alphabet", :char => "С" %></li>
+    <li><%= link_to "Т", :action => "alphabet", :char => "Т" %></li>
+    <li><%= link_to "У", :action => "alphabet", :char => "У" %></li>
+    <li><%= link_to "Ф", :action => "alphabet", :char => "Ф" %></li>
+    <li><%= link_to "Х", :action => "alphabet", :char => "Х" %></li>
+    <li><%= link_to "Ц", :action => "alphabet", :char => "Ц" %></li>
+    <li><%= link_to "Ч", :action => "alphabet", :char => "Ч" %></li>
+    <li><%= link_to "Щ", :action => "alphabet", :char => "Щ" %></li>
+    <li><%= link_to "Э", :action => "alphabet", :char => "Э" %></li>
+    <li><%= link_to "Ю", :action => "alphabet", :char => "Ю" %></li>
+    <li><%= link_to "Я", :action => "alphabet", :char => "Я" %></li>
+  </ul>
+</dl>
+
+<% @catf.each do |cat| %>
+<%= link_to cat.title, cat %> (<%= cat.products.count %>)<br/>
+<% end %>
+</div>
+
+
+<!--<%= link_to 'New Category', new_category_path %>-->

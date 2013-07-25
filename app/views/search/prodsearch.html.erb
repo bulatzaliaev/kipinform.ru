@@ -1,0 +1,16 @@
+<br/>
+<div class="span12 partner">
+    <%= render 'layouts/carousel' %>
+</div>
+<div class="span12 product_list">
+<div style="padding-top:30px; padding-bottom:20px;">
+<span>
+	Вы искали "<%= @query %>". Количество найденных товаров: <strong><%= @my_search_results.count %></strong>
+</span>
+</div>
+<ul>
+<% @my_search_results.each do |x| %>
+<li><strong><%= link_to x.title, refinery.products_product_path(x) %></strong> </li>
+<% end %>
+</ul>
+</div>

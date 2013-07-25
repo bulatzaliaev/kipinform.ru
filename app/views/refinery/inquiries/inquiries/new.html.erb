@@ -1,0 +1,64 @@
+<br/>
+<div class="span12 partner">
+    <%= render 'layouts/carousel' %>
+</div>
+<div class="span12">
+  <br/>
+<p>
+Уважаемые партнеры,  в нашем разделе «Отзывы и предложения» вы можете написать на личную почту руководства компании свои пожелания по улучшению сервиса предоставляемых услуг, оставить свои замечания по работе наших специалистов, по оказанным нашей компанией услугам, отразить вопросы связанные со сроками поставки, качеством полученной продукции, выполнением нашей компанией гарантийных обязательств и т.д.
+</p>
+<p>
+Вся полученная от Вас информация будет проанализирована, и руководство компании предоставит Вам ответ.  Наша «Обратная связь» создана для улучшения качества, предоставляемых услуг для наших клиентов. На основании ваших отзывов и предложений формируется мнение о нашей компании для потенциальных клиентов.
+</p>
+<p>
+Просим не употреблять нецензурные выражения и необъективные высказывания, данная рубрика не редактируется.
+</p>
+<hr>
+</div>
+<hr>
+<div class="span12">
+<% unless @inquiries.nil? %>
+<% @inquiries.each do |inq| %>
+<p>
+<%= inq.message %>
+<br/>  
+<i><font color="grey"><%= inq.name %></font></i>
+</p>
+<hr>
+<% end %>
+<% end %>
+</div>
+<div class="span12">
+<% content_for :body_content_left do %>
+  <div class='inquiries'>
+    <%= form_for [refinery, :inquiries, @inquiry] do |f| %>
+      <%= render :partial => "/refinery/admin/error_messages",
+                 :locals => {
+                   :object => @inquiry,
+                   :include_object_name => true
+                 } %>
+      <div class="field">
+        <%# f.required_label :name,  :class => 'placeholder-fallback' %>
+        <%= f.text_field :name, :class => 'text', :required => 'required', :placeholder => 'ФИО' %>
+      </div>
+      <div class="field">
+        <%# f.required_label :email, :class => 'placeholder-fallback' %>
+        <%= f.email_field :email, :class => 'text email', :required => 'required', :placeholder => 'E-mail' %>
+      </div>
+      <div class="field">
+        <%# f.label :phone, :class => 'placeholder-fallback' %>
+        <%= f.text_field :phone, :class => 'text phone', :placeholder => '+7 843 1234567' %>
+      </div>
+      <div class='field message_field'>
+        <%# f.required_label :message, :class => 'placeholder-fallback' %>
+        <%= f.text_area :message, :rows => 8, :required => 'required', :placeholder => 'Сообщение' %>
+      </div>
+      <div class="actions">
+        <%= f.submit 'Отправить' %>
+        <%= link_to t('.privacy_policy'), "/pages/privacy-policy", :id => "privacy_link" if Refinery::Inquiries.show_contact_privacy_link %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<%= render :partial => "/refinery/content_page" %>
+</div>

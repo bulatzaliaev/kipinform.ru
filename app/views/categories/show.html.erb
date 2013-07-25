@@ -1,0 +1,79 @@
+<script>
+/* Открываем модальное окно: */
+function open_popup(box) { 
+  $("#background_for_popup").show() 
+  $(box).center_popup(); 
+  $(box).delay(500).show(1); 
+} 
+ 
+/* Закрываем модальное окно: */
+function close_popup(box) { 
+  $(box).hide(); 
+  $("#background_for_popup").delay(500).hide(1); 
+} 
+ 
+/* Обращение к сессии, добавляем в корзину и остаемся на странице */
+function set_session_hidden(i,q) { 
+  $.ajax({
+    url: "/category/set_hidden_session?id="+i+"&quantity="+q
+    });
+} 
+
+/* Обращение к сессии, добавляем в корзину и переходим в нее */
+function set_session(i,q) { 
+  $.ajax({
+    url: "/set/"+i+"/?quantity="+q,
+    success: function(){
+      location.href = location.protocol + '//' + location.host + '/set';    
+    }
+    });
+} 
+
+jQuery(document).ready(function() { 
+  /* Позиционируем блочный элемент окна по центру страницы: */
+  jQuery.fn.center_popup = function() { 
+    this.css('position', 'absolute'); 
+    this.css('top', ($(window).height() - this.height()) / 2 + $(window).scrollTop() + 'px'); 
+    this.css('left', ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + 'px'); 
+  };
+});
+</script>
+<p id="notice"><%= notice %></p>
+<div class="span12 product_list">
+	<div id="background_for_popup"></div>
+	<h4><%= link_to @category.parent.title, categories_path %> - <%= @category.title %> </h4>
+	<div id="products">
+		<table>
+			<tbody >
+			<% @category.products.each do |product| %>
+			<div id="modal_window"> 
+  				<ul class="nav nav-pills nav-stacked">
+  					<li style="padding-bottom:10px;" class="active">
+  						<a onclick="set_session_hidden(<%= product.id.to_s %>, 1); close_popup('#modal_window');" href="#">Добавить в корзину и продолжить выбор товара</a> 
+  					</li>
+  					<li style="padding-bottom:10px;" class="active">
+  						<a onclick="set_session(<%= product.id.to_s %>, 1);" href="#">Оформить запрос цен</a> 
+  					</li>
+  					<li class="active">
+  						<a onclick="close_popup('#modal_window');" href="#">Вернуться</a>
+  					</li>
+  				</ul>
+			</div> 
+				<tr>
+					<td class="list-thumb">
+            <%= link_to (image_fu product.images.first, '160x120'), refinery.products_product_path(product) %>
+          </td>
+					<td class="list-info">
+						<strong><%= link_to product.title, refinery.products_product_path(product) %></strong>
+            <p><%=raw product.features.lines.to_a[0]%><%= link_to "Подробная информация", refinery.products_product_path(product) %> </p>
+						<strong>Производитель:</strong>	<%=raw product.manufacturer %>
+					</td>
+					<td class="list-price"> 
+						<a onclick="open_popup('#modal_window');" href="#" style="font-weight: bold;">Запросить цену</a>
+					</td>
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>

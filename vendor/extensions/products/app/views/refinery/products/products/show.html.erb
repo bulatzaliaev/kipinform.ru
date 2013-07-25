@@ -1,0 +1,121 @@
+<script>
+/* Открываем модальное окно: */
+function open_popup(box) { 
+  $("#background_for_popup").show() 
+  $(box).center_popup(); 
+  $(box).delay(500).show(1); 
+} 
+ 
+/* Закрываем модальное окно: */
+function close_popup(box) { 
+  $(box).hide(); 
+  $("#background_for_popup").delay(500).hide(1); 
+} 
+ 
+/* Обращение к сессии, добавляем в корзину и остаемся на странице */
+function set_session_hidden(i,q) { 
+  $.ajax({
+    url: "/category/set_hidden_session?id="+i+"&quantity="+q
+    });
+} 
+
+/* Обращение к сессии, добавляем в корзину и переходим в нее */
+function set_session(i,q) { 
+  $.ajax({
+    url: "/set/"+i+"/?quantity="+q,
+    success: function(){
+      location.href = location.protocol + '//' + location.host + '/set';    
+    }
+    });
+} 
+
+jQuery(document).ready(function() { 
+  /* Позиционируем блочный элемент окна по центру страницы: */
+  jQuery.fn.center_popup = function() { 
+    this.css('position', 'absolute'); 
+    this.css('top', ($(window).height() - this.height()) / 2 + $(window).scrollTop() + 'px'); 
+    this.css('left', ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + 'px'); 
+  };
+  $("a#single_image").fancybox();
+});
+</script>
+
+<div class="span12 product_page">
+  <h3><%= @product.category.parent.title %> - <%= @product.category.title %>  </h3>
+<div id="product-header">
+</div>
+
+    <div id="buy">
+     <span id="spantitle"><%= @product.title %></span> Количество: <%= text_field_tag 'quantity', '1' %> &nbsp;
+      <a onclick="open_popup('#modal_window');" href="#" style="font-weight: bold;">Запросить цену</a>
+    </div>      
+
+ 
+<div id="modal_window"> 
+  <ul class="nav nav-pills nav-stacked">
+  <li style="padding-bottom:10px;" class="active"><a onclick="set_session_hidden(<%= @product.id.to_s %>, document.getElementById('quantity').value); close_popup('#modal_window');" href="#">Добавить в корзину и продолжить выбор товара</a> </li>
+  <li style="padding-bottom:10px;" class="active"><a onclick="set_session(<%= @product.id.to_s %>, document.getElementById('quantity').value);" href="#">Оформить запрос цен</a> </li>
+  <li class="active"><a onclick="close_popup('#modal_window');" href="#">Вернуться</a></li>
+  </ul>
+  <!--
+  <span style="float:right; padding-top: 15px;"><input type="button" onclick="close_popup('#modal_window');" value="Вернуться" id="back_to_product"/> </span>
+-->
+</div> 
+<div id="background_for_popup"></div>
+<div style="height:240px; padding-top:20px;">
+<div>
+<div id="product-info">
+  <div id="product-img">
+    <% @product.images.each_with_index do |image, index| %>
+     <%= link_to (image_fu image, "280x200"), image.url, :id => "single_image" %>
+    <% end %>
+  </div>
+</div>
+
+<div id="p-help">
+  <div id="help">
+    Вам нужна консультация? Свяжитесь с нашими специалистами <br/><br/>
+    тел.: <strong>8-800-555-18-90</strong>,<br/>
+    тел.: <strong>8-843-295-82-77 </strong><br/> email: <strong>mail@kip-k-s.ru</strong> 
+  </div>
+</div>
+</div>
+</div>
+<div style="width:100%;">
+<ul class="nav nav-tabs" >
+  <li class="active"><a href="#usage" data-toggle="tab">Применение</a></li>
+  <li><a href="#description" data-toggle="tab">Описание</a></li>
+  <li><a href="#features" data-toggle="tab">Характеристики</a></li>
+  <li><a href="#docs" data-toggle="tab">Документация</a></li>
+  <li><a href="#complectation" data-toggle="tab">Комплектация</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="usage">
+     <%=raw @product.usage %>
+  </div>
+   <div class="tab-pane" id="description">
+    <%=raw @product.description %> <br/>
+    <strong> Производитель: </strong> <%=raw @product.manufacturer %> <br/>
+  </div>
+  <div class="tab-pane" id="features">
+    <%=raw @product.features %>
+    <strong> Номер ГосРеестра: </strong> <%=raw @product.gosreestr_number %> <br/>
+    <strong> Обозначение СИ: </strong> <%=raw @product.si_identity %> <br/>
+    <strong> Межповерочный интервал: </strong> <%=raw @product.m_interval %>
+  </div>
+  <div class="tab-pane" id="docs">
+    <% if @product.docs.present? %>
+        <%= link_to @product.docs.title, @product.docs.url %>
+      <% else %>
+        docs
+      <% end %>
+  </div>
+  <div class="tab-pane" id="complectation">
+    <%=raw @product.complectation %>
+  </div>
+</div>
+</div>
+</div>
+
+
